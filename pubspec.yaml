@@ -1,0 +1,45 @@
+name: flutter_movie_explorer
+description: A movie browser app showcasing BLoC, go_router, shimmer, and Hero animations.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management
+  flutter_bloc: ^8.1.5
+  equatable: ^2.0.5
+
+  # Navigation
+  go_router: ^14.2.7
+
+  # Networking
+  dio: ^5.4.3
+
+  # Images
+  cached_network_image: ^3.3.1
+
+  # UI
+  shimmer: ^3.0.0
+
+  # Pagination
+  infinite_scroll_pagination: ^4.0.0
+
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  bloc_test: ^9.1.5
+  mocktail: ^1.0.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
