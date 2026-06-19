@@ -119,21 +119,48 @@ flutter pub get
 
 ### Configuration
 
-Open `lib/core/constants/api_constants.dart` and replace the placeholder:
+Pass the key at build/run time, no file edit needed:
 
-```dart
-class ApiConstants {
-  static const String apiKey = 'YOUR_TMDB_API_KEY'; // ← replace this
-  static const String baseUrl = 'https://api.themoviedb.org/3';
-  static const String imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
-}
+```bash
+flutter run --dart-define=TMDB_API_KEY=your_key
 ```
+
+It is read in `lib/core/constants/api_constants.dart` via `String.fromEnvironment`.
 
 ### Run
 
 ```bash
-flutter run
+flutter run --dart-define=TMDB_API_KEY=your_key
 ```
+
+---
+
+## Docker
+
+The app ships as a Flutter **web** build served by nginx, using a multi-stage `Dockerfile` (Flutter SDK build stage, then a ~100 MB nginx:alpine runtime image).
+
+```bash
+TMDB_API_KEY=your_key docker compose up --build
+```
+Open http://localhost:8080.
+
+Or without Compose:
+
+```bash
+docker build --build-arg TMDB_API_KEY=your_key -t flutter_movie_explorer .
+docker run -p 8080:80 flutter_movie_explorer
+```
+
+`TMDB_API_KEY` is passed to `flutter build web --dart-define` at build time. Without it the app builds with a placeholder and the TMDB calls will fail. Note that any key compiled into a client-side bundle is visible to users, so use a restricted/free-tier key.
+
+| File | Purpose |
+|---|---|
+| `Dockerfile` | Stage 1 builds `flutter build web --release`, stage 2 copies the output into nginx |
+| `nginx.conf` | SPA fallback to `index.html`, gzip, long-lived cache for assets, no-cache for the bootstrap files |
+| `docker-compose.yml` | One-command run on port 8080 |
+| `.dockerignore` | Keeps `.git`, `build/` and `.dart_tool/` out of the build context |
+
+Docker serves the web target only. For Android/iOS builds use `flutter run` as above.
 
 ---
 

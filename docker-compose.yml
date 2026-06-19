@@ -1,0 +1,9 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        TMDB_API_KEY: ${TMDB_API_KEY:-YOUR_KEY_HERE}
+    ports:
+      - "8080:80"
+    restart: unless-stopped
