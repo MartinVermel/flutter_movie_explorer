@@ -5,5 +5,5 @@ services:
       args:
         TMDB_API_KEY: ${TMDB_API_KEY:-YOUR_KEY_HERE}
     ports:
-      - "8080:80"
+      - "${HOST_PORT:-8102}:80"
     restart: unless-stopped
