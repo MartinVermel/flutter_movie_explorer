@@ -53,15 +53,17 @@ lib/
 ├── core/
 │   ├── constants/        # TMDB base URL, image base URL, placeholder key
 │   ├── router/           # go_router setup — 3 routes with path params
-│   ├── services/         # MovieService (Dio + API key interceptor)
+│   ├── services/         # MovieService (Dio; API key as a default query param)
 │   └── theme/            # Dark-first MaterialTheme
 └── features/
     └── movies/
         ├── bloc/
-        │   ├── movie_bloc.dart         # MovieBloc — FetchMovies, FetchMoreMovies, SearchMovies
-        │   ├── movie_event.dart        # Sealed-class-style events
+        │   ├── movie_bloc.dart         # MovieBloc — fetch, paginate, search, recent searches
+        │   ├── movie_event.dart        # FetchMovies, FetchMoreMovies, SearchMovies, ...
         │   ├── movie_state.dart        # Immutable state with copyWith + Equatable
-        │   └── movie_detail_bloc.dart  # Separate BLoC for detail screen
+        │   ├── movie_detail_bloc.dart  # Separate BLoC for the detail screen
+        │   ├── movie_detail_event.dart
+        │   └── movie_detail_state.dart
         ├── models/
         │   ├── movie.dart              # Movie (fromJson, poster URL helper)
         │   ├── movie_detail.dart       # MovieDetail with cast, genres, runtime
@@ -69,7 +71,7 @@ lib/
         ├── screens/
         │   ├── movie_list_screen.dart  # BlocListener + BlocBuilder + PagedGridView
         │   ├── movie_detail_screen.dart# Hero + BackdropFilter + BlocBuilder
-        │   └── search_screen.dart      # SearchBloc + debounce timer
+        │   └── search_screen.dart      # Debounce Timer + MovieBloc search events
         └── widgets/
             ├── movie_card.dart         # Hero-wrapped CachedNetworkImage card
             ├── movie_card_skeleton.dart# Shimmer placeholder matching card layout
@@ -97,7 +99,7 @@ User scrolls to bottom
 | `go_router` | ^14.2.7 | Declarative navigation with typed path params |
 | `infinite_scroll_pagination` | ^4.0.0 | Paginated list / grid UI |
 | `shimmer` | ^3.0.0 | Skeleton loading animation |
-| `dio` | ^5.4.3 | HTTP client with request interceptors |
+| `dio` | ^5.4.3 | HTTP client (base options, query params, logging interceptor) |
 | `cached_network_image` | ^3.3.1 | Disk + memory poster image caching |
 
 ---
